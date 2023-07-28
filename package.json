@@ -3,28 +3,18 @@
   "version": "0.1.0",
   "description": "send uri request from native",
   "main": "lib/commonjs/index",
-  "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
-  "react-native": "src/index",
-  "source": "src/index",
+  "react-native": "lib/commonjs/index",
+  "source": "lib/commonjs/index",
   "files": [
     "src",
     "lib",
     "android",
     "ios",
-    "cpp",
-    "*.podspec",
+    "react-native-core.podspec",
     "!lib/typescript/example",
-    "!ios/build",
     "!android/build",
-    "!android/gradle",
-    "!android/gradlew",
-    "!android/gradlew.bat",
-    "!android/local.properties",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__",
-    "!**/.*"
+    "!ios/build"
   ],
   "scripts": {
     "test": "jest",
@@ -151,7 +141,6 @@
     "output": "lib",
     "targets": [
       "commonjs",
-      "module",
       [
         "typescript",
         {

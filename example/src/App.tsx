@@ -1,18 +1,29 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'native-uri-request';
+import { RequestType, makeRequest } from 'native-uri-request';
+
+const someRequest = async (uri: string) => {
+  try {
+    const result = await makeRequest({
+      uri,
+      type: RequestType.GET,
+      headers: { 'Content-Type': 'application/json' },
+    });
+    console.log('someRequest =>', result);
+  } catch (error) {
+    console.log('someRequest:ERRROR =>', error);
+  }
+};
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+  useEffect(() => {
+    someRequest('https://jsonplaceholder.typicode.com/todos/1');
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Result</Text>
     </View>
   );
 }
