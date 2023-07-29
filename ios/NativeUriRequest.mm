@@ -32,26 +32,53 @@ RCT_REMAP_METHOD(makeRequest, makeRequestWithParams:(NSDictionary *)params
         if (data.length > 0 && error == nil)
           {
               NSDictionary *dicResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-              NSMutableDictionary *dictionary = [NSMutableDictionary new];
-                [dictionary setObject:@"SUCCESS" forKey:@"type"];
-                [dictionary setObject:[NSNumber numberWithInt:(httpResponse.statusCode)] forKey:@"statusCode"];
-                [dictionary setObject:dicResponse forKey:@"data"];
-                callback(@[dictionary, [NSNull null]]);
+              callback(@[[self convertResultToDictionary:@"SUCCESS" :[NSNumber numberWithInt:(httpResponse.statusCode)]  :dicResponse :nil], [NSNull null]]);
           }
           else
           {
-              NSMutableDictionary *dictionary = [NSMutableDictionary new];
-                [dictionary setObject:@"ERROR" forKey:@"type"];
-                [dictionary setObject:[NSNumber numberWithInt:(httpResponse.statusCode)] forKey:@"statusCode"];
-                [dictionary setObject:error.description forKey:@"error"];
-                callback(@[[NSNull null], dictionary]);
+              callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :[NSNumber numberWithInt:(httpResponse.statusCode)]  :nil :error.description]]);
           }
         }] resume];
     } else if([type isEqualToString:@"POST"]) {
+        NSError *errorSerialize;
+        [urlRequest setHTTPMethod:@"POST"];
+        if (![params objectForKey:@"body"]) {
+            callback(@[[NSNull null], @"PLEASE PROVIDE BODY FOR POST REQUEST"]);
+            return;
+        }
+        NSData *postData = [NSJSONSerialization dataWithJSONObject:[params objectForKey:@"body"] options:0 error:&errorSerialize];
+        [urlRequest setHTTPBody:postData];
+        [[session dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+        {
+          NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        if (data.length > 0 && error == nil)
+          {
+              NSDictionary *dicResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+              callback(@[[self convertResultToDictionary:@"SUCCESS" :[NSNumber numberWithInt:(httpResponse.statusCode)]  :dicResponse :nil], [NSNull null]]);
+          }
+          else
+          {
+              callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :[NSNumber numberWithInt:(httpResponse.statusCode)]  :nil :error.description]]);
+          }
+        }] resume];
     } else {
-        callback(@[[NSNull null], @"SOMETHNG WAS WRONG"]);
+        callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :@(500) :nil :@"SOMETHNG WAS WRONG"]]);
     }
 }
 
+- (NSDictionary *)convertResultToDictionary:(NSString *)type
+                                            :(NSNumber *)statusCode
+                                            :(NSDictionary * _Nullable)data
+                                            :(NSString * _Nullable)error {
+        NSMutableDictionary *dictionary = [NSMutableDictionary new];
+          [dictionary setObject:type forKey:@"type"];
+          [dictionary setObject:statusCode forKey:@"statusCode"];
+        if(data != nil) {
+            [dictionary setObject:data forKey:@"data"];
+        }   else {
+            [dictionary setObject:error forKey:@"error"];
+        }
+        return  dictionary;
+}
 
 @end

@@ -1,31 +1,41 @@
 import React, { useEffect } from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { RequestType, makeRequest } from 'native-uri-request';
 
-const someRequest = async (uri: string) => {
+// const resultPostRequest = await makeRequest({
+//   uri,
+//   type: RequestType.POST,
+//   headers: { 'Content-Type': 'application/json' },
+//   body: { id: 1, ddd: 'adad' },
+// });
+
+// const resultGetRequest = await makeRequest({
+//   uri,
+//   type: RequestType.GET,
+//   headers: { 'Content-Type': 'application/json' },
+// });
+
+const doRequest = async (uri: string) => {
   try {
-    const result = await makeRequest({
+    const resultGetRequest = await makeRequest({
       uri,
       type: RequestType.GET,
       headers: { 'Content-Type': 'application/json' },
     });
-    console.log('someRequest =>', result);
+    console.log('someRequest =>', resultGetRequest);
   } catch (error) {
-    console.log('someRequest:ERRROR =>', error);
+    console.log('someRequest:[ERRROR] =>', error);
   }
 };
 
 export default function App() {
   useEffect(() => {
-    someRequest('https://jsonplaceholder.typicode.com/todos/1');
+    // PROVIDE SOME URL FOR REQUESTS
+    doRequest('https://my-json-server.typicode.com/typicode/demo/db');
   }, []);
 
-  return (
-    <View style={styles.container}>
-      <Text>Result</Text>
-    </View>
-  );
+  return <View style={styles.container} />;
 }
 
 const styles = StyleSheet.create({
@@ -33,10 +43,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
   },
 });
