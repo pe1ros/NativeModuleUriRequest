@@ -82,7 +82,8 @@ RCT_REMAP_METHOD(makeRequest, makeRequestWithParams:(NSDictionary *)params
           [dictionary setObject:statusCode forKey:@"statusCode"];
         if(data != nil) {
             [dictionary setObject:data forKey:@"data"];
-        }   else {
+        }
+        if (error != nil){
             [dictionary setObject:error forKey:@"error"];
         }
         return  dictionary;

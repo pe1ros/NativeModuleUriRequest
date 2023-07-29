@@ -64,7 +64,7 @@ public class NativeUriRequestModule extends ReactContextBaseJavaModule {
       return;
     }
     if (incomingHeaders == null) {
-      callback.invoke(null, this.convertResultToDictionary("ERROR", 501, null, "PLEASE PROVIDE HEADERS"), null);
+      callback.invoke(null, this.convertResultToDictionary("ERROR", 501, null, "PLEASE PROVIDE HEADERS"));
       return;
     }
 
