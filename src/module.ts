@@ -1,5 +1,10 @@
 import { NativeModules, Platform } from 'react-native';
-import type { IGET, IPOST, IResponseSuccess, IResponseError } from './types';
+import type {
+  IRequestGET,
+  IRequestPOST,
+  IResponseSuccess,
+  IResponseError,
+} from './types';
 
 const LINKING_ERROR =
   `The package 'native-uri-request' doesn't seem to be linked. Make sure: \n\n` +
@@ -19,7 +24,7 @@ const NativeUriRequest = NativeModules.NativeUriRequest
     );
 
 export async function makeRequest(
-  params: IGET | IPOST
+  params: IRequestGET | IRequestPOST
 ): Promise<IResponseSuccess | IResponseError> {
   return new Promise((resolve, reject) => {
     NativeUriRequest.makeRequest(

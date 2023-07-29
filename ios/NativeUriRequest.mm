@@ -6,6 +6,7 @@ RCT_EXPORT_MODULE()
 RCT_REMAP_METHOD(makeRequest, makeRequestWithParams:(NSDictionary *)params
                  responseCallback:(RCTResponseSenderBlock)callback)
 {
+    // TODO : add eroor if empty params
     NSString *url = [params objectForKey:@"uri"];
     NSString *type = [params objectForKey:@"type"];
     NSDictionary *incomingHeaders  = [params objectForKey:@"headers"];
@@ -42,7 +43,7 @@ RCT_REMAP_METHOD(makeRequest, makeRequestWithParams:(NSDictionary *)params
     } else if([type isEqualToString:@"POST"]) {
         NSError *errorSerialize;
         [urlRequest setHTTPMethod:@"POST"];
-        if (![params objectForKey:@"body"]) {
+        if (![params objectForKey       :@"body"]) {
             callback(@[[NSNull null], @"PLEASE PROVIDE BODY FOR POST REQUEST"]);
             return;
         }
@@ -62,7 +63,7 @@ RCT_REMAP_METHOD(makeRequest, makeRequestWithParams:(NSDictionary *)params
           }
         }] resume];
     } else {
-        callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :@(500) :nil :@"SOMETHNG WAS WRONG"]]);
+        callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :@(500) :nil :@"SOMETHING WAS WRONG"]]);
     }
 }
 

@@ -2,37 +2,45 @@ import React, { useEffect } from 'react';
 
 import { StyleSheet, View } from 'react-native';
 import { RequestType, makeRequest } from 'native-uri-request';
-
+/**
+ * GET request
+ * @param uri = 'https://dummyjson.com/products'
+ */
 // const resultPostRequest = await makeRequest({
 //   uri,
 //   type: RequestType.POST,
 //   headers: { 'Content-Type': 'application/json' },
-//   body: { id: 1, ddd: 'adad' },
+//   body: { title: 'TITLE', description: 'DESCRIPTION' },
 // });
 
+/**
+ * POST request
+ * @param uri = 'https://dummyjson.com/products/add'
+ */
 // const resultGetRequest = await makeRequest({
 //   uri,
 //   type: RequestType.GET,
 //   headers: { 'Content-Type': 'application/json' },
 // });
 
-const doRequest = async (uri: string) => {
+const request = async (uri: string) => {
   try {
-    const resultGetRequest = await makeRequest({
+    const resultPostRequest = await makeRequest({
       uri,
       type: RequestType.GET,
       headers: { 'Content-Type': 'application/json' },
     });
-    console.log('someRequest =>', resultGetRequest);
+
+    console.log('request:[SUCCESS] =>', resultPostRequest);
   } catch (error) {
-    console.log('someRequest:[ERRROR] =>', error);
+    console.log('request:[ERRROR] =>', error);
   }
 };
 
 export default function App() {
   useEffect(() => {
     // PROVIDE SOME URL FOR REQUESTS
-    doRequest('https://my-json-server.typicode.com/typicode/demo/db');
+    request('https://dummyjson.com/products');
   }, []);
 
   return <View style={styles.container} />;
