@@ -8,9 +8,8 @@ import { RequestType, makeRequest } from 'native-uri-request';
  */
 // const resultPostRequest = await makeRequest({
 //   uri,
-//   type: RequestType.POST,
+//   type: RequestType.GET,
 //   headers: { 'Content-Type': 'application/json' },
-//   body: { title: 'TITLE', description: 'DESCRIPTION' },
 // });
 
 /**
@@ -19,8 +18,9 @@ import { RequestType, makeRequest } from 'native-uri-request';
  */
 // const resultGetRequest = await makeRequest({
 //   uri,
-//   type: RequestType.GET,
+//   type: RequestType.POST,
 //   headers: { 'Content-Type': 'application/json' },
+//   body: { title: 'TITLE', description: 'DESCRIPTION' },
 // });
 
 const request = async (uri: string) => {
@@ -39,7 +39,7 @@ const request = async (uri: string) => {
 
 export default function App() {
   useEffect(() => {
-    // PROVIDE SOME URL FOR REQUESTS
+    // PROVIDE HERE URL FOR GET/POST REQUESTS
     request('https://dummyjson.com/products');
   }, []);
 
