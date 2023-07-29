@@ -1,31 +1,6 @@
-# native-uri-request
-
-send uri request from native
-
-## Installation
-
-```sh
-npm install native-uri-request
-```
-
-## Usage
-
-```js
-import { multiply } from 'native-uri-request';
-
-// ...
-
-const result = await multiply(3, 7);
-```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
-
-## License
-
-MIT
-
----
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
+### Instalation
+1. npm install  => from root folder
+2. npm run prepack => from root folder
+3. cd example && npm install
+4. cd ios && pod install && cd .. => from example folder
+5. run on ios or android device => from example folder
