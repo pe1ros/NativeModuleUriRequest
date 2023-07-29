@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 
 import { StyleSheet, View } from 'react-native';
 import { RequestType, makeRequest } from 'native-uri-request';
+
 /**
  * GET request
  * @param uri = 'https://dummyjson.com/products'
  */
-// const resultPostRequest = await makeRequest({
+// const resultGetRequest = await makeRequest({
 //   uri,
 //   type: RequestType.GET,
 //   headers: { 'Content-Type': 'application/json' },
@@ -16,7 +17,7 @@ import { RequestType, makeRequest } from 'native-uri-request';
  * POST request
  * @param uri = 'https://dummyjson.com/products/add'
  */
-// const resultGetRequest = await makeRequest({
+// const resultPostRequest = await makeRequest({
 //   uri,
 //   type: RequestType.POST,
 //   headers: { 'Content-Type': 'application/json' },
@@ -33,7 +34,7 @@ const request = async (uri: string) => {
 
     console.log('request:[SUCCESS] =>', resultPostRequest);
   } catch (error) {
-    console.log('request:[ERRROR] =>', error);
+    console.log('request:[ERROR] =>', error);
   }
 };
 
