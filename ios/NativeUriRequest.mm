@@ -6,18 +6,20 @@ RCT_EXPORT_MODULE()
 RCT_REMAP_METHOD(makeRequest, makeRequestWithParams:(NSDictionary *)params
                  responseCallback:(RCTResponseSenderBlock)callback)
 {
-    // TODO : add eroor if empty params
     NSString *url = [params objectForKey:@"uri"];
     NSString *type = [params objectForKey:@"type"];
     NSDictionary *incomingHeaders  = [params objectForKey:@"headers"];
     if (!url) {
-        callback(@[[NSNull null], @"PLEASE PROVIDE URI"]);
+        callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :[NSNumber numberWithInt:(501)] :nil :@"PLEASE PROVIDE URI"]]);
+        return;
     }
     if (!type) {
-        callback(@[[NSNull null], @"PLEASE PROVIDE TYPE"]);
+        callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :[NSNumber numberWithInt:(501)] :nil :@"PLEASE PROVIDE TYPE"]]);
+        return;
     }
     if (!incomingHeaders) {
-        callback(@[[NSNull null], @"PLEASE PROVIDE HEADERS"]);
+        callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :[NSNumber numberWithInt:(501)] :nil :@"PLEASE PROVIDE HEADERS"]]);
+        return;
     }
     
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
@@ -34,17 +36,19 @@ RCT_REMAP_METHOD(makeRequest, makeRequestWithParams:(NSDictionary *)params
           {
               NSDictionary *dicResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
               callback(@[[self convertResultToDictionary:@"SUCCESS" :[NSNumber numberWithInt:(httpResponse.statusCode)]  :dicResponse :nil], [NSNull null]]);
+              return;
           }
           else
           {
               callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :[NSNumber numberWithInt:(httpResponse.statusCode)]  :nil :error.description]]);
+              return;
           }
         }] resume];
     } else if([type isEqualToString:@"POST"]) {
         NSError *errorSerialize;
         [urlRequest setHTTPMethod:@"POST"];
-        if (![params objectForKey       :@"body"]) {
-            callback(@[[NSNull null], @"PLEASE PROVIDE BODY FOR POST REQUEST"]);
+        if (![params objectForKey:@"body"]) {
+            callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :[NSNumber numberWithInt:(501)]  :nil :@"PLEASE PROVIDE BODY FOR POST REQUEST"]]);
             return;
         }
         NSData *postData = [NSJSONSerialization dataWithJSONObject:[params objectForKey:@"body"] options:0 error:&errorSerialize];
@@ -56,10 +60,12 @@ RCT_REMAP_METHOD(makeRequest, makeRequestWithParams:(NSDictionary *)params
           {
               NSDictionary *dicResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
               callback(@[[self convertResultToDictionary:@"SUCCESS" :[NSNumber numberWithInt:(httpResponse.statusCode)]  :dicResponse :nil], [NSNull null]]);
+              return;
           }
           else
           {
               callback(@[[NSNull null], [self convertResultToDictionary:@"ERROR" :[NSNumber numberWithInt:(httpResponse.statusCode)]  :nil :error.description]]);
+              return;
           }
         }] resume];
     } else {

@@ -56,13 +56,16 @@ public class NativeUriRequestModule extends ReactContextBaseJavaModule {
     ReadableMap body = params.getMap("body");
     ReadableMap incomingHeaders = params.getMap("headers");
     if (url == null) {
-      callback.invoke(convertResultToDictionary("ERROR", 501, null, "PLEASE PROVIDE URI"), null);
+      callback.invoke(null, this.convertResultToDictionary("ERROR", 501, null, "PLEASE PROVIDE URI"));
+      return;
     }
     if (type == null) {
-      callback.invoke(convertResultToDictionary("ERROR", 501, null, "PLEASE PROVIDE TYPE"), null);
+      callback.invoke(null, this.convertResultToDictionary("ERROR", 501, null, "PLEASE PROVIDE TYPE"));
+      return;
     }
     if (incomingHeaders == null) {
-      callback.invoke(convertResultToDictionary("ERROR", 501, null, "PLEASE PROVIDE HEADERS"), null);
+      callback.invoke(null, this.convertResultToDictionary("ERROR", 501, null, "PLEASE PROVIDE HEADERS"), null);
+      return;
     }
 
     try {
@@ -86,7 +89,7 @@ public class NativeUriRequestModule extends ReactContextBaseJavaModule {
           br.close();
           callback.invoke(convertResultToDictionary("SUCCESS", httpConnection.getResponseCode(), response.toString(), null), null);
         } catch (IOException e) {
-          callback.invoke(convertResultToDictionary("ERROR", httpConnection.getResponseCode(), null, e.getLocalizedMessage()), null);
+          callback.invoke(null, convertResultToDictionary("ERROR", httpConnection.getResponseCode(), null, e.getLocalizedMessage()));
         } finally {
           if (httpConnection != null) {
             httpConnection.disconnect();
@@ -94,7 +97,8 @@ public class NativeUriRequestModule extends ReactContextBaseJavaModule {
         }
       } else if (type.equals("POST")) {
         if (body == null) {
-          callback.invoke(convertResultToDictionary("ERROR", 501, null , "PLEASE PROVIDE BODY" ), null);
+          callback.invoke(null, convertResultToDictionary("ERROR", 501, null , "PLEASE PROVIDE BODY" ));
+          return;
         }
         try {
           ReadableMapKeySetIterator iter = incomingHeaders.keySetIterator();
@@ -112,10 +116,10 @@ public class NativeUriRequestModule extends ReactContextBaseJavaModule {
             response.append(inputLine);
           }
           in.close();
-          callback.invoke(convertResultToDictionary("SUCCESS", 200, response.toString() , null ), null);
+          callback.invoke(this.convertResultToDictionary("SUCCESS", 200, response.toString() , null ), null);
 
         } catch (IOException ex) {
-          callback.invoke(convertResultToDictionary("ERROR", httpConnection.getResponseCode(), null, ex.getLocalizedMessage()), null);
+          callback.invoke(null, this.convertResultToDictionary("ERROR", httpConnection.getResponseCode(), null, ex.getLocalizedMessage()));
         } finally {
           httpConnection.disconnect();
         }
