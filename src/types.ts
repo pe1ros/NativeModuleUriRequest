@@ -26,3 +26,9 @@ export interface IResponseError {
   statusCode: number;
   error: string;
 }
+
+export enum NativeEvents {
+  ERROR_EVENT = 'ERROR_EVENT',
+  MAGNETOMETER_EVENT = 'MAGNETOMETER_EVENT',
+  MOTION_EVENT = 'MOTION_EVENT',
+}

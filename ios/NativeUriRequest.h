@@ -6,7 +6,13 @@
 #else
 #import <React/RCTBridgeModule.h>
 
-@interface NativeUriRequest : NSObject <RCTBridgeModule>
+#import <CoreMotion/CoreMotion.h>
+#import <React/RCTEventEmitter.h>
+
+@interface NativeUriRequest : RCTEventEmitter <RCTBridgeModule>
+@property (nonatomic, strong) CMMotionManager* manager;
+@property (nonatomic, strong) CMDeviceMotionHandler motionHandler;
+@property (nonatomic, strong) CMMagnetometerHandler magnitometerHandler;
 #endif
 
 @end
